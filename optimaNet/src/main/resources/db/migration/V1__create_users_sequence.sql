@@ -1,0 +1,1 @@
+CREATE SEQUENCE IF NOT EXISTS user_code_seq START 1;
