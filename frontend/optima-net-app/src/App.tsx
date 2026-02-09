@@ -1,5 +1,6 @@
 import './App.css'
 import Navbar from './components/NavBar'
+import AccountOnboardingForm from './customer-pages/AccountOnboardingForm'
 
 function App() {
 
@@ -7,7 +8,7 @@ function App() {
     <>
       <Navbar/>
       <div className="test p-10 text-white">CSS TEST</div>;
-      <h1>Hello, from Net-Banking Application</h1>
+      <AccountOnboardingForm/>
     </>
   )
 }
