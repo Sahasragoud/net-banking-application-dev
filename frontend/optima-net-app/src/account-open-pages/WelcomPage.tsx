@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import PanVerifyPopUp from "./PanVerifyPopUp";
 
 type IdType = "aadhaar" | "voter";
 
@@ -8,6 +9,9 @@ const WelcomePage: React.FC = () => {
   const [idValue, setIdValue] = useState("");
   const [consent, setConsent] = useState(false);
   const [terms, setTerms] = useState(false);
+
+  const [showVerify, setShowVerify] = useState(false);
+  const userName = "Rohan Sharma"; // mock fetched name
 
   const isPanValid = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(pan);
   const isAadhaarValid = /^\d{12}$/.test(idValue);
@@ -19,12 +23,11 @@ const WelcomePage: React.FC = () => {
   const isFormValid = isPanValid && isIdValid && consent && terms;
 
 
-  const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!isFormValid) return;
-
-    console.log({ pan, idType, idValue });
-  };
+    setShowVerify(true);
+    };
 
   const handleInfoClick = (field: string) => {
     alert(`Information about ${field}`);
@@ -197,6 +200,15 @@ const WelcomePage: React.FC = () => {
 
         </form>
       </div>
+
+      {showVerify && (
+        <PanVerifyPopUp
+            pan={pan}
+            userName={userName}
+            onClose={() => setShowVerify(false)}
+        />
+        )}
+
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import React from "react";
-
+import SampleCard from "../assets/A_sample_of_Permanent_Account_Number_(PAN)_Card.jpg"
 interface Props {
   pan: string;
   userName: string;
@@ -22,8 +22,7 @@ const PanVerifyPopUp: React.FC<Props> = ({
         {/* PAN Image */}
         <div className="flex justify-center mb-6">
           <img
-            src="https://upload.wikimedia.org/wikipedia/commons/3/3f/Permanent_Account_Number_Card.jpg"
-            alt="PAN Card"
+            src={SampleCard}
             className="w-72 rounded-lg shadow"
           />
         </div>
