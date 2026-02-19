@@ -3,7 +3,7 @@ import logo from "../assets/OptimaBankLogo.png";
 // import { useNavigate } from "react-router-dom";
 
 const NavBar = () => {
-//   const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const handleNavigateToHome = () =>{
     // navigate("/");
@@ -34,13 +34,6 @@ const NavBar = () => {
 
         {/* Right: Actions */}
         <nav className="flex items-center gap-6">
-
-          <a
-            href="/about"
-            className="text-sm font-medium text-blue-800 hover:text-blue-900 transition-colors"
-          >
-            About Us
-          </a>
 
           <button
             type="button"
