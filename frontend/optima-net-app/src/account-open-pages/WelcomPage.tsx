@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import PanVerifyPopUp from "./PanVerifyPopUp";
+import AadharVerifyPopUp from "./AadharVerifyPopUp";
 
 type IdType = "aadhaar" | "voter";
 
@@ -11,6 +12,8 @@ const WelcomePage: React.FC = () => {
   const [terms, setTerms] = useState(false);
 
   const [showVerify, setShowVerify] = useState(false);
+  const [showAadhar, setShowAadhar] = useState(false);
+
   const userName = "Rohan Sharma"; // mock fetched name
 
   const isPanValid = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(pan);
@@ -206,6 +209,22 @@ const WelcomePage: React.FC = () => {
             pan={pan}
             userName={userName}
             onClose={() => setShowVerify(false)}
+            onProceed={() => {
+            if (idType === "aadhaar") {
+                setShowVerify(false);
+                setShowAadhar(true);
+            } else {
+                alert("Voter Verification Complete");
+                setShowVerify(false);
+            }
+            }}
+        />
+        )}
+
+        {showAadhar && (
+        <AadharVerifyPopUp
+            maskedAadhar={`XXXXXXXX${idValue.slice(-4)}`}
+            onClose={() => setShowAadhar(false)}
         />
         )}
 

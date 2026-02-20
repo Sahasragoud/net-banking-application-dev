@@ -4,17 +4,15 @@ interface Props {
   pan: string;
   userName: string;
   onClose: () => void;
+  onProceed: () => void;
 }
 
 const PanVerifyPopUp: React.FC<Props> = ({
   pan,
   userName,
   onClose,
+  onProceed,
 }) => {
-  const handleProceed = () => {
-    console.log("Verified PAN:", pan);
-  };
-
   return (
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 px-4">
       <div className="w-full max-w-md bg-white rounded-2xl shadow-2xl p-6 sm:p-8 animate-fadeIn">
@@ -50,7 +48,7 @@ const PanVerifyPopUp: React.FC<Props> = ({
         {/* Buttons */}
         <div className="mt-6 space-y-3">
           <button
-            onClick={handleProceed}
+            onClick={onProceed}
             className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-lg font-medium transition"
           >
             Proceed
