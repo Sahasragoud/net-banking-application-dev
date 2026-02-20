@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import NomineePopup from "./NomineePopup";
 
 const AddressDetailsPage: React.FC = () => {
   const [flatNo, setFlatNo] = useState("");
@@ -8,6 +9,7 @@ const AddressDetailsPage: React.FC = () => {
   const [pincode, setPincode] = useState("");
 
   const isPincodeValid = /^\d{6}$/.test(pincode);
+  const [showNomineePopup, setShowNomineePopup] = useState(false);
 
   const isFormValid =
     flatNo.trim() &&
@@ -15,20 +17,12 @@ const AddressDetailsPage: React.FC = () => {
     landmark.trim() &&
     isPincodeValid;
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!isFormValid) return;
+    const handleSubmit = (e: React.FormEvent) => {
+      e.preventDefault();
+      if (!isFormValid) return;
 
-    console.log({
-      flatNo,
-      line1,
-      line2,
-      landmark,
-      pincode,
-    });
-
-    // Next step navigation here if needed
-  };
+      setShowNomineePopup(true);
+    };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
@@ -103,8 +97,20 @@ const AddressDetailsPage: React.FC = () => {
           >
             Proceed
           </button>
-
         </form>
+
+        {showNomineePopup && (
+          <NomineePopup
+            onAddNominee={() => {
+              setShowNomineePopup(false);
+              console.log("Navigate to Add Nominee Page");
+            }}
+            onLater={() => {
+              setShowNomineePopup(false);
+              console.log("Continue without nominee");
+            }}
+          />
+        )}
       </div>
     </div>
   );
