@@ -5,9 +5,10 @@ import Navbar from './components/NavBar'
 import WelcomePage from './account-open-pages/WelcomPage'
 import UserDetailsPage from "./account-open-pages/UserDetailsPage";
 import AddressDetailsPage from './account-open-pages/AddressDetailsPage'
+import NominationPage from './account-open-pages/NominationPage'
+import FormalityCheckPage from './account-open-pages/FormalityCheckPage'
 
 function App() {
-
   return (
     <>
       <Navbar/>
@@ -17,6 +18,9 @@ function App() {
         <Route path="/welcome" element={<WelcomePage />} />
         <Route path="/user-details" element={<UserDetailsPage />} />
         <Route path="/address-details" element={<AddressDetailsPage />} />
+        <Route path="/nomination" element={<NominationPage/>} />
+        <Route path="/formalities" element={<FormalityCheckPage/>} />
+
       </Routes>
     </BrowserRouter>
     </>

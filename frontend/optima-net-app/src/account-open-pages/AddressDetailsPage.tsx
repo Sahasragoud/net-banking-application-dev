@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import NomineePopup from "./NomineePopup";
+import { useNavigate } from "react-router-dom";
 
 const AddressDetailsPage: React.FC = () => {
   const [flatNo, setFlatNo] = useState("");
@@ -23,6 +24,19 @@ const AddressDetailsPage: React.FC = () => {
 
       setShowNomineePopup(true);
     };
+  const navigate = useNavigate();
+
+  const handleAddNominee = () => {
+    setShowNomineePopup(false);
+    navigate("/nomination"); // 👈 navigate to your page
+  };
+
+  const handleLater = () => {
+    setShowNomineePopup(false);
+    navigate("/formalities");
+  };
+
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
@@ -101,16 +115,11 @@ const AddressDetailsPage: React.FC = () => {
 
         {showNomineePopup && (
           <NomineePopup
-            onAddNominee={() => {
-              setShowNomineePopup(false);
-              console.log("Navigate to Add Nominee Page");
-            }}
-            onLater={() => {
-              setShowNomineePopup(false);
-              console.log("Continue without nominee");
-            }}
+            onAddNominee={handleAddNominee}
+            onLater={handleLater}
           />
         )}
+
       </div>
     </div>
   );
