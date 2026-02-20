@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const UserDetailsPage: React.FC = () => {
   const [occupation, setOccupation] = useState("");
@@ -19,18 +20,13 @@ const UserDetailsPage: React.FC = () => {
     confirmMotherName.trim().length > 0 &&
     motherName === confirmMotherName;
 
+  const navigate = useNavigate();
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!isFormValid) return;
 
-    console.log({
-      occupation,
-      incomeSource,
-      yearlyIncome,
-      maritalStatus,
-      fatherName,
-      motherName,
-    });
+    navigate("/address-details");
   };
 
   return (

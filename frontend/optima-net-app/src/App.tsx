@@ -4,6 +4,7 @@ import './App.css'
 import Navbar from './components/NavBar'
 import WelcomePage from './account-open-pages/WelcomPage'
 import UserDetailsPage from "./account-open-pages/UserDetailsPage";
+import AddressDetailsPage from './account-open-pages/AddressDetailsPage'
 
 function App() {
 
@@ -15,6 +16,7 @@ function App() {
         <Route path="/" element={<PersonalInfo/>} />
         <Route path="/welcome" element={<WelcomePage />} />
         <Route path="/user-details" element={<UserDetailsPage />} />
+        <Route path="/address-details" element={<AddressDetailsPage />} />
       </Routes>
     </BrowserRouter>
     </>
