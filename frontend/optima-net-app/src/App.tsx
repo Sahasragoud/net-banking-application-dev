@@ -7,6 +7,7 @@ import UserDetailsPage from "./account-open-pages/UserDetailsPage";
 import AddressDetailsPage from './account-open-pages/AddressDetailsPage'
 import NominationPage from './account-open-pages/NominationPage'
 import FormalityCheckPage from './account-open-pages/FormalityCheckPage'
+import SetMPINPage from './account-open-pages/SetMPINPage'
 
 function App() {
   return (
@@ -20,7 +21,7 @@ function App() {
         <Route path="/address-details" element={<AddressDetailsPage />} />
         <Route path="/nomination" element={<NominationPage/>} />
         <Route path="/formalities" element={<FormalityCheckPage/>} />
-
+        <Route path="/vbnmx" element={<SetMPINPage/>} />
       </Routes>
     </BrowserRouter>
     </>

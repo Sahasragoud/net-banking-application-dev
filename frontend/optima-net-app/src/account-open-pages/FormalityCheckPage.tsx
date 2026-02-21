@@ -1,9 +1,12 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function FormalityCheckPage() {
   const [checks, setChecks] = useState<boolean[]>(
-    new Array(6).fill(false)
+    new Array(5).fill(false)
   );
+
+  const navigate = useNavigate();
 
   const handleChange = (index: number) => {
     const updated = [...checks];
@@ -12,10 +15,13 @@ export default function FormalityCheckPage() {
   };
 
   const handleUnselectAll = () => {
-    setChecks(new Array(6).fill(false));
+    setChecks(new Array(5).fill(false));
   };
 
   const allChecked = checks.every(Boolean);
+  const handleProceed = () => {
+      navigate("/vbnmx");
+  };
 
   return (
     <div className="min-h-screen flex justify-center items-center bg-gray-100">
@@ -46,7 +52,7 @@ export default function FormalityCheckPage() {
             "I am an Indian citizen and a tax resident of India and of no other country.",
             "I hereby give my condent to issue virtual card eith my optimanet a/c.",
             "For investments, I agree and authorize OptimaNet bank to validate my KYC Registery Agency(KRA).",
-            "Declaration Confirmed",
+            "I hereby authorize the bank to create a virtual Payment Address usable and tagged to mu OptimaNet Account an my behalf using my registered mobile number.",
           ].map((label, index) => (
             <label key={index} className="flex items-center gap-2">
               <input
@@ -67,6 +73,7 @@ export default function FormalityCheckPage() {
               ? "bg-blue-600"
               : "bg-gray-400 cursor-not-allowed"
           }`}
+          onClick={handleProceed}
         >
           Proceed
         </button>
