@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import PanVerifyPopUp from "./PanVerifyPopUp";
 import AadharVerifyPopUp from "./AadharVerifyPopUp";
+import AccountStepLayout from "./AccountStepLayout";
 
 type IdType = "aadhaar" | "voter";
 
@@ -37,10 +38,8 @@ const WelcomePage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-6 sm:p-8">
 
-        {/* Heading */}
+    <AccountStepLayout step={2} totalSteps={5}>
         <div className="text-center mb-6">
           <h1 className="text-2xl font-semibold text-gray-800 flex items-center justify-center gap-2">
             Welcome 👏
@@ -202,7 +201,6 @@ const WelcomePage: React.FC = () => {
           </button>
 
         </form>
-      </div>
 
       {showVerify && (
         <PanVerifyPopUp
@@ -228,7 +226,7 @@ const WelcomePage: React.FC = () => {
         />
         )}
 
-    </div>
+  </AccountStepLayout>
   );
 };
 

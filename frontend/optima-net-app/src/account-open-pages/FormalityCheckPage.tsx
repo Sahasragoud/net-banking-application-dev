@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import AccountStepLayout from "./AccountStepLayout";
 
 export default function FormalityCheckPage() {
   const [checks, setChecks] = useState<boolean[]>(
@@ -24,10 +25,9 @@ export default function FormalityCheckPage() {
   };
 
   return (
-    <div className="min-h-screen flex justify-center items-center bg-gray-100">
-      <div className="bg-white p-8 rounded-xl shadow w-full max-w-md">
+    <AccountStepLayout step={6} totalSteps={7}>
 
-        {/* Heading */}
+    {/* Heading */}
         <h1 className="text-xl font-semibold mb-2">
           Formality Check
         </h1>
@@ -77,8 +77,6 @@ export default function FormalityCheckPage() {
         >
           Proceed
         </button>
-
-      </div>
-    </div>
+      </AccountStepLayout>
   );
 }

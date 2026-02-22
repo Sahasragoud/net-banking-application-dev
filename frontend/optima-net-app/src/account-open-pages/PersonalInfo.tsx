@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import AccountStepLayout from "./AccountStepLayout";
 
 interface FormData {
   mobile: string;
@@ -52,8 +53,7 @@ const PersonalInfo: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-6 sm:p-8">
+    <AccountStepLayout step={1} totalSteps={5}>
         <h2 className="text-xl font-semibold text-gray-800 mb-6 text-center">
           Open Zero Balance Savings Account Online
         </h2>
@@ -164,8 +164,8 @@ const PersonalInfo: React.FC = () => {
             Open Now
           </button>
         </form>
-      </div>
-    </div>
+
+    </AccountStepLayout>
   );
 };
 

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import AccountStepLayout from "./AccountStepLayout";
 
 export default function SetMPINPage() {
   const [mpin, setMpin] = useState("");
@@ -27,9 +28,7 @@ export default function SetMPINPage() {
     };
 
   return (
-    <div className="min-h-screen flex justify-center items-center bg-gray-100">
-      <div className="bg-white p-8 rounded-xl shadow w-full max-w-md">
-
+    <AccountStepLayout step={4} totalSteps={13}>
         {/* Heading */}
         <h1 className="text-xl font-semibold mb-2">
           Set MPIN
@@ -84,8 +83,6 @@ export default function SetMPINPage() {
         <p className="text-xs text-center text-gray-500">
           Your MPIN will be required for secure transactions.
         </p>
-
-      </div>
-    </div>
+    </AccountStepLayout>
   );
 }
