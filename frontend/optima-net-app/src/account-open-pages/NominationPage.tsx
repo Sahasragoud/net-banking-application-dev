@@ -1,5 +1,4 @@
 import { useState } from "react";
-import AccountOpeningLayout from "./AccountStepLayout";
 import AccountStepLayout from "./AccountStepLayout";
 
 /* =======================
