@@ -1,12 +1,15 @@
 import { useState } from "react";
 import AccountStepLayout from "./AccountStepLayout";
 import { useNavigate } from "react-router-dom";
+import { useOnboarding } from "./OnboardingContext";
 
 export default function SetMPINPage() {
   const [mpin, setMpin] = useState("");
   const [confirmMpin, setConfirmMpin] = useState("");
 
   const navigate = useNavigate();
+  const { setMpinSet } = useOnboarding();
+
 
   const isValid =
     mpin.length === 6 &&
@@ -21,7 +24,8 @@ export default function SetMPINPage() {
   const handleConfirm = () => {
     if (!isValid) return;
     console.log("MPIN Set Successfully");
-    navigate("/virtual-card")
+     setMpinSet(true);
+    navigate("/virtual-card");
   };
 
   const handleChange =

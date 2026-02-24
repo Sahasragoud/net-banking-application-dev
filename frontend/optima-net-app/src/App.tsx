@@ -10,24 +10,27 @@ import FormalityCheckPage from './account-open-pages/FormalityCheckPage'
 import SetMPINPage from './account-open-pages/SetMPINPage'
 import { DebitCardConfig } from './account-open-pages/DebitCardConfig'
 import { DebitCardCreatedPopUp } from './account-open-pages/DebitCardCreatedPopUp'
+import { OnboardingProvider } from './account-open-pages/OnboardingContext'
 
 function App() {
   return (
     <>
-      <Navbar/>
-      <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<PersonalInfo/>} />
-        <Route path="/welcome" element={<WelcomePage />} />
-        <Route path="/user-details" element={<UserDetailsPage />} />
-        <Route path="/address-details" element={<AddressDetailsPage />} />
-        <Route path="/nomination" element={<NominationPage/>} />
-        <Route path="/formalities" element={<FormalityCheckPage/>} />
-        <Route path="/vbnmx" element={<SetMPINPage/>} />
-        <Route path="/virtual-card" element={<DebitCardConfig/>} />
-        <Route path="/debit-ad" element={<DebitCardCreatedPopUp/>} />
-      </Routes>
-    </BrowserRouter>
+      <Navbar />
+      <OnboardingProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<PersonalInfo />} />
+            <Route path="/welcome" element={<WelcomePage />} />
+            <Route path="/user-details" element={<UserDetailsPage />} />
+            <Route path="/address-details" element={<AddressDetailsPage />} />
+            <Route path="/nomination" element={<NominationPage />} />
+            <Route path="/formalities" element={<FormalityCheckPage />} />
+            <Route path="/vbnmx" element={<SetMPINPage />} />
+            <Route path="/virtual-card" element={<DebitCardConfig />} />
+            <Route path="/debit-ad" element={<DebitCardCreatedPopUp />} />
+          </Routes>
+        </BrowserRouter>
+      </OnboardingProvider>
     </>
   )
 }

@@ -2,14 +2,18 @@ import AccountStepLayout from "./AccountStepLayout"
 import virtualCard from '../assets/virtualDebit.jpg';
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useOnboarding } from "./OnboardingContext";
 
 export const DebitCardConfig : React.FC = () => {
 
     const [enableOnline, setEnableOnline] = useState(true);
     const [physicalCard, setPhysicalCard] = useState(false);
 
+    const { setDebitConfigured } = useOnboarding();
+
     const navigate = useNavigate();
     const handleProceed = () => {
+        setDebitConfigured(true);  
         navigate("/debit-ad");
     }
     return (
@@ -89,6 +93,6 @@ export const DebitCardConfig : React.FC = () => {
         </button>
     </div>
 
-        </AccountStepLayout>
+    </AccountStepLayout>
     )
 }

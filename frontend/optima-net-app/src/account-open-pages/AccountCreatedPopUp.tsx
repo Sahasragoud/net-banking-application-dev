@@ -1,14 +1,13 @@
 import type React from "react";
 import accountmade from "../assets/accountmade.jpg";
+import { useOnboarding } from "./OnboardingContext";
+
 
 interface Props {
-    MPIN : boolean,
-    debitConfig : boolean
+  onClose?: () => void;
 }
-const AccountCreatedPopUp : React.FC<Props> = ({
-    MPIN, 
-    debitConfig
-}) => {
+export const AccountCreatedPopUp : React.FC<Props> = ({ onClose }) => {
+  const { mpinSet, debitConfigured } = useOnboarding();
 
     return (
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 px-4">
@@ -23,7 +22,20 @@ const AccountCreatedPopUp : React.FC<Props> = ({
 
         <div className="text-center space-y-2">
             <p>Your 101 Account is now ready</p>
+            {mpinSet && <p>✔ MPIN Successfully Set</p>}
+            {debitConfigured && <p>✔ Debit Card Configured</p>}
         </div>
+
+        {onClose && (
+          <div className="mt-6 text-center">
+            <button
+              onClick={onClose}
+              className="px-5 py-2 bg-blue-600 text-white rounded-lg"
+            >
+              Go to Dashboard
+            </button>
+          </div>
+        )}
       </div>
     </div>
     );

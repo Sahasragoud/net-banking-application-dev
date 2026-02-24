@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import AccountStepLayout from "./AccountStepLayout";
 import ad from "../assets/credit-card-ad.jpg";
+import { AccountCreatedPopUp } from "./AccountCreatedPopUp";
 
 export const DebitCardCreatedPopUp: React.FC = () => {
+  const [showPopup, setShowPopup] = useState(false);
   return (
     <AccountStepLayout step={8} totalSteps={8}>
       <div className="text-center">
@@ -40,7 +42,16 @@ export const DebitCardCreatedPopUp: React.FC = () => {
           </div>
         </div>
 
+        {/* Proceed Button */}
+          <div className="mt-10">
+            <button
+              onClick={() => setShowPopup(true)}
+              className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition"
+            >
+              Finish Setup
+            </button>
+          </div>
       </div>
-    </AccountStepLayout>
+    {showPopup && <AccountCreatedPopUp onClose={() => setShowPopup(false)} />}    </AccountStepLayout>
   );
 };
