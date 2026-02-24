@@ -1,12 +1,17 @@
 import AccountStepLayout from "./AccountStepLayout"
 import virtualCard from '../assets/virtualDebit.jpg';
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const DebitCardConfig : React.FC = () => {
 
     const [enableOnline, setEnableOnline] = useState(true);
     const [physicalCard, setPhysicalCard] = useState(false);
 
+    const navigate = useNavigate();
+    const handleProceed = () => {
+        navigate("/debit-ad");
+    }
     return (
         <AccountStepLayout step={8} totalSteps={8}>
             <div className="text-center mb-6">
@@ -25,7 +30,7 @@ export const DebitCardConfig : React.FC = () => {
                 <img 
                 src={virtualCard}
                 alt="Visrtual Debit Card"
-                className="w-96 rounded-xl shadow lg"
+                className="w-96 rounded-xl shadow-lg"
                 />
             </div>
         </div>
@@ -46,7 +51,7 @@ export const DebitCardConfig : React.FC = () => {
                 }`}
             >
                 <div className={`bg-white w-4 h-4 rounded-full shadow-md transform transition ${
-                    enableOnline ? "translate-x-6" : "transslate-x-0"
+                    enableOnline ? "translate-x-6" : "translate-x-0"
                     }`}/>
             </button>
             </div>
@@ -78,7 +83,8 @@ export const DebitCardConfig : React.FC = () => {
 
       {/* Fixed Bottom Button */}
       <div className="pt-6">
-        <button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-medium transition">
+        <button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-medium transition"
+        onClick={handleProceed}>
           Proceed
         </button>
     </div>

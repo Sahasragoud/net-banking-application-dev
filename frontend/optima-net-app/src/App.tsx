@@ -9,6 +9,7 @@ import NominationPage from './account-open-pages/NominationPage'
 import FormalityCheckPage from './account-open-pages/FormalityCheckPage'
 import SetMPINPage from './account-open-pages/SetMPINPage'
 import { DebitCardConfig } from './account-open-pages/DebitCardConfig'
+import { DebitCardCreatedPopUp } from './account-open-pages/DebitCardCreatedPopUp'
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path="/formalities" element={<FormalityCheckPage/>} />
         <Route path="/vbnmx" element={<SetMPINPage/>} />
         <Route path="/virtual-card" element={<DebitCardConfig/>} />
+        <Route path="/debit-ad" element={<DebitCardCreatedPopUp/>} />
       </Routes>
     </BrowserRouter>
     </>
