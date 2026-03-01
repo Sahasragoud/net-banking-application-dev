@@ -2,9 +2,17 @@ import React, { useState } from "react";
 import AccountStepLayout from "./AccountStepLayout";
 import ad from "../assets/credit-card-ad.jpg";
 import { AccountCreatedPopUp } from "./AccountCreatedPopUp";
+import { useNavigate } from "react-router-dom";
 
 export const DebitCardCreatedPopUp: React.FC = () => {
   const [showPopup, setShowPopup] = useState(false);
+  const navigate = useNavigate();
+
+  const handleGoToDashboard = () => {
+    setShowPopup(false);
+    navigate("/dashboard");
+  };
+
   return (
     <AccountStepLayout step={8} totalSteps={8}>
       <div className="text-center">
@@ -52,6 +60,7 @@ export const DebitCardCreatedPopUp: React.FC = () => {
             </button>
           </div>
       </div>
-    {showPopup && <AccountCreatedPopUp onClose={() => setShowPopup(false)} />}    </AccountStepLayout>
+      {showPopup && <AccountCreatedPopUp onGoToDashboard={handleGoToDashboard} />}
+    </AccountStepLayout>
   );
 };

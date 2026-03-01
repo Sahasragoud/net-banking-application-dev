@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import PersonalInfo from './account-open-pages/PersonalInfo'
 import './App.css'
 import Navbar from './components/NavBar'
@@ -11,6 +11,9 @@ import SetMPINPage from './account-open-pages/SetMPINPage'
 import { DebitCardConfig } from './account-open-pages/DebitCardConfig'
 import { DebitCardCreatedPopUp } from './account-open-pages/DebitCardCreatedPopUp'
 import { OnboardingProvider } from './account-open-pages/OnboardingContext'
+import AccoutDetailsPage from './account-open-pages/AccoutDetailsPage'
+import SavingsDashboard from './account-open-pages/SavingsDashboard'
+import PostAccountDashboard from './account-open-pages/PostAccountDashboard'
 
 function App() {
   return (
@@ -19,7 +22,8 @@ function App() {
       <OnboardingProvider>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<PersonalInfo />} />
+            <Route path="/" element={<SavingsDashboard />} />
+            <Route path="/open-savings" element={<PersonalInfo />} />
             <Route path="/welcome" element={<WelcomePage />} />
             <Route path="/user-details" element={<UserDetailsPage />} />
             <Route path="/address-details" element={<AddressDetailsPage />} />
@@ -28,6 +32,9 @@ function App() {
             <Route path="/vbnmx" element={<SetMPINPage />} />
             <Route path="/virtual-card" element={<DebitCardConfig />} />
             <Route path="/debit-ad" element={<DebitCardCreatedPopUp />} />
+            <Route path="/account-details" element={<AccoutDetailsPage />} />
+            <Route path="/dashboard" element={<PostAccountDashboard />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </BrowserRouter>
       </OnboardingProvider>

@@ -5,8 +5,9 @@ import { useOnboarding } from "./OnboardingContext";
 
 interface Props {
   onClose?: () => void;
+  onGoToDashboard?: () => void;
 }
-export const AccountCreatedPopUp : React.FC<Props> = ({ onClose }) => {
+export const AccountCreatedPopUp : React.FC<Props> = ({ onClose, onGoToDashboard }) => {
   const { mpinSet, debitConfigured } = useOnboarding();
 
     return (
@@ -16,7 +17,7 @@ export const AccountCreatedPopUp : React.FC<Props> = ({ onClose }) => {
         <div className="flex justify-center mb-6">
           <img
             src={accountmade}
-            className="w-72 rounded-lg shadow"
+            className="w-52 rounded-lg shadow"
           />
         </div>
 
@@ -26,10 +27,10 @@ export const AccountCreatedPopUp : React.FC<Props> = ({ onClose }) => {
             {debitConfigured && <p>✔ Debit Card Configured</p>}
         </div>
 
-        {onClose && (
+        {(onClose || onGoToDashboard) && (
           <div className="mt-6 text-center">
             <button
-              onClick={onClose}
+              onClick={onGoToDashboard ?? onClose}
               className="px-5 py-2 bg-blue-600 text-white rounded-lg"
             >
               Go to Dashboard
