@@ -1,70 +1,121 @@
 
-curl -v -X POST http://localhost:8080/api/employee/auth/login/initiate -H "Content-Type: application/json" -H "Accept: application/json" -d '{"employeeCode":"OPT-EMP-2026-000001"}'
+// curl -v -X POST http://localhost:8080/api/employee/auth/login/initiate -H "Content-Type: application/json" -H "Accept: application/json" -d '{"employeeCode":"OPT-EMP-2026-000001"}'
 
-curl -X POST http://localhost:8080/api/employee/auth/login/verify -H "Content-Type: application/json" -d '{ "sessionId": 57, "otp": "584462", "deviceInfo": { "deviceId": "test-device-002", "deviceFingerprint": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)", "deviceType": "WEB", "deviceModel": "Chrome Browser", "osVersion": "Windows 11", "appVersion": "1.0.0" } }'
+// curl -X POST http://localhost:8080/api/employee/auth/login/verify -H "Content-Type: application/json" -d '{ "sessionId": 57, "otp": "584462", "deviceInfo": { "deviceId": "test-device-002", "deviceFingerprint": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)", "deviceType": "WEB", "deviceModel": "Chrome Browser", "osVersion": "Windows 11", "appVersion": "1.0.0" } }'
 
-curl -X GET "http://localhost:8080/api/admin/employees/?page=0&size=10&sortField=fullName&sortDirection=asc" \
-  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwiZGV2aWNlSWQiOiJ0ZXN0LWRldmljZS0wMDEiLCJyb2xlIjoiQURNSU4iLCJzdGF0dXMiOiJBQ1RJVkUiLCJpYXQiOjE3NjkwOTYzMzEsImV4cCI6MTc2OTA5NzIzMSwidHlwZSI6IkFDQ0VTUyIsImlzcyI6Im9wdGltYU5ldC1hdXRoIn0.8I1NgKH7QHGUt5IF7fXyV3kDqEe3y7Rh0a7bGFRvmhc"
+// curl -X GET "http://localhost:8080/api/admin/employees/?page=0&size=10&sortField=fullName&sortDirection=asc" \
+//   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwiZGV2aWNlSWQiOiJ0ZXN0LWRldmljZS0wMDEiLCJyb2xlIjoiQURNSU4iLCJzdGF0dXMiOiJBQ1RJVkUiLCJpYXQiOjE3NjkwOTYzMzEsImV4cCI6MTc2OTA5NzIzMSwidHlwZSI6IkFDQ0VTUyIsImlzcyI6Im9wdGltYU5ldC1hdXRoIn0.8I1NgKH7QHGUt5IF7fXyV3kDqEe3y7Rh0a7bGFRvmhc"
 
------- KYC OFFICER -----------
-curl -v -X POST http://localhost:8080/api/employee/auth/login/initiate -H "Content-Type: application/json" -H "Accept: application/json" -d '{"employeeCode":"OPT-EMP-2026-000002"}'
+// ------ KYC OFFICER -----------
+// curl -v -X POST http://localhost:8080/api/employee/auth/login/initiate -H "Content-Type: application/json" -H "Accept: application/json" -d '{"employeeCode":"OPT-EMP-2026-000002"}'
 
-curl -X POST "http://localhost:8080/api/kyc-officer/kyc-applications/13/assign" \
-  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1IiwiZGV2aWNlSWQiOiJ0ZXN0LWRldmljZS0wMDIiLCJyb2xlIjoiS1lDX09GRklDRVIiLCJzdGF0dXMiOiJBQ1RJVkUiLCJpYXQiOjE3NjkyNzk4MTksImV4cCI6MTc2OTI4MDcxOSwidHlwZSI6IkFDQ0VTUyIsImlzcyI6Im9wdGltYU5ldC1hdXRoIn0.slubhFKFoZHp32c3MGgCF5PSZkmuyuBuuC4XKC8slhA" \
-  -H "Content-Type: application/json"
+// curl -X POST "http://localhost:8080/api/kyc-officer/kyc-applications/13/assign" \
+//   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1IiwiZGV2aWNlSWQiOiJ0ZXN0LWRldmljZS0wMDIiLCJyb2xlIjoiS1lDX09GRklDRVIiLCJzdGF0dXMiOiJBQ1RJVkUiLCJpYXQiOjE3NjkyNzk4MTksImV4cCI6MTc2OTI4MDcxOSwidHlwZSI6IkFDQ0VTUyIsImlzcyI6Im9wdGltYU5ldC1hdXRoIn0.slubhFKFoZHp32c3MGgCF5PSZkmuyuBuuC4XKC8slhA" \
+//   -H "Content-Type: application/json"
 
-curl -X POST "http://localhost:8080/api/kyc-officer/kyc-applications/13/approve" \
-  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1IiwiZGV2aWNlSWQiOiJ0ZXN0LWRldmljZS0wMDIiLCJyb2xlIjoiS1lDX09GRklDRVIiLCJzdGF0dXMiOiJBQ1RJVkUiLCJpYXQiOjE3NjkwOTkzMjgsImV4cCI6MTc2OTEwMDIyOCwidHlwZSI6IkFDQ0VTUyIsImlzcyI6Im9wdGltYU5ldC1hdXRoIn0.2XJmCGC1W-MnmzVo25wHSiBL3xP1e4Y4XJEn6h02FEk" \
-  -H "Content-Type: application/json"
+// curl -X POST "http://localhost:8080/api/kyc-officer/kyc-applications/13/approve" \
+//   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1IiwiZGV2aWNlSWQiOiJ0ZXN0LWRldmljZS0wMDIiLCJyb2xlIjoiS1lDX09GRklDRVIiLCJzdGF0dXMiOiJBQ1RJVkUiLCJpYXQiOjE3NjkwOTkzMjgsImV4cCI6MTc2OTEwMDIyOCwidHlwZSI6IkFDQ0VTUyIsImlzcyI6Im9wdGltYU5ldC1hdXRoIn0.2XJmCGC1W-MnmzVo25wHSiBL3xP1e4Y4XJEn6h02FEk" \
+//   -H "Content-Type: application/json"
 
-curl -X POST "http://localhost:8080/api/kyc-officer/kyc-applications/4/reject?reason=blurry-documents" \
-  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1IiwiZGV2aWNlSWQiOiJ0ZXN0LWRldmljZS0wMDIiLCJyb2xlIjoiS1lDX09GRklDRVIiLCJzdGF0dXMiOiJBQ1RJVkUiLCJpYXQiOjE3NjkwOTkzMjgsImV4cCI6MTc2OTEwMDIyOCwidHlwZSI6IkFDQ0VTUyIsImlzcyI6Im9wdGltYU5ldC1hdXRoIn0.2XJmCGC1W-MnmzVo25wHSiBL3xP1e4Y4XJEn6h02FEk" \
-  -H "Content-Type: application/json"
+// curl -X POST "http://localhost:8080/api/kyc-officer/kyc-applications/4/reject?reason=blurry-documents" \
+//   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1IiwiZGV2aWNlSWQiOiJ0ZXN0LWRldmljZS0wMDIiLCJyb2xlIjoiS1lDX09GRklDRVIiLCJzdGF0dXMiOiJBQ1RJVkUiLCJpYXQiOjE3NjkwOTkzMjgsImV4cCI6MTc2OTEwMDIyOCwidHlwZSI6IkFDQ0VTUyIsImlzcyI6Im9wdGltYU5ldC1hdXRoIn0.2XJmCGC1W-MnmzVo25wHSiBL3xP1e4Y4XJEn6h02FEk" \
+//   -H "Content-Type: application/json"
 
-curl -X GET "http://localhost:8080/api/kyc-officer/kyc-applications?status=KYC_PENDING&page=0&size=5&sortField=id&sortDirection=asc" \
-     -H "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1IiwiZGV2aWNlSWQiOiJ0ZXN0LWRldmljZS0wMDIiLCJyb2xlIjoiS1lDX09GRklDRVIiLCJzdGF0dXMiOiJBQ1RJVkUiLCJpYXQiOjE3Njk0MDYyMTIsImV4cCI6MTc2OTQwNzExMiwidHlwZSI6IkFDQ0VTUyIsImlzcyI6Im9wdGltYU5ldC1hdXRoIn0.yUvW8TfRFYWvJj8x0zLFMJIp9piB7k1m50oopxmKJJ4"
+// curl -X GET "http://localhost:8080/api/kyc-officer/kyc-applications?status=KYC_PENDING&page=0&size=5&sortField=id&sortDirection=asc" \
+//      -H "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1IiwiZGV2aWNlSWQiOiJ0ZXN0LWRldmljZS0wMDIiLCJyb2xlIjoiS1lDX09GRklDRVIiLCJzdGF0dXMiOiJBQ1RJVkUiLCJpYXQiOjE3Njk0MDYyMTIsImV4cCI6MTc2OTQwNzExMiwidHlwZSI6IkFDQ0VTUyIsImlzcyI6Im9wdGltYU5ldC1hdXRoIn0.yUvW8TfRFYWvJj8x0zLFMJIp9piB7k1m50oopxmKJJ4"
 
-curl -X GET "http://localhost:8080/api/kyc-officer/kyc-applications/me?page=0&size=5&sortField=id&sortDirection=asc" \
-     -H "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1IiwiZGV2aWNlSWQiOiJ0ZXN0LWRldmljZS0wMDIiLCJyb2xlIjoiS1lDX09GRklDRVIiLCJzdGF0dXMiOiJBQ1RJVkUiLCJpYXQiOjE3Njk0MDM0MTQsImV4cCI6MTc2OTQwNDMxNCwidHlwZSI6IkFDQ0VTUyIsImlzcyI6Im9wdGltYU5ldC1hdXRoIn0.kylheWoP7_IMD6eCdL_R0wnZtsu37v96U34Ey6F3kU4"
+// curl -X GET "http://localhost:8080/api/kyc-officer/kyc-applications/me?page=0&size=5&sortField=id&sortDirection=asc" \
+//      -H "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1IiwiZGV2aWNlSWQiOiJ0ZXN0LWRldmljZS0wMDIiLCJyb2xlIjoiS1lDX09GRklDRVIiLCJzdGF0dXMiOiJBQ1RJVkUiLCJpYXQiOjE3Njk0MDM0MTQsImV4cCI6MTc2OTQwNDMxNCwidHlwZSI6IkFDQ0VTUyIsImlzcyI6Im9wdGltYU5ldC1hdXRoIn0.kylheWoP7_IMD6eCdL_R0wnZtsu37v96U34Ey6F3kU4"
 
-curl -X GET "http://localhost:8080/api/kyc-officer/kyc-applications/13/documents?page=0&size=5&sortField=id&sortDirection=asc" \
-    -H "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1IiwiZGV2aWNlSWQiOiJ0ZXN0LWRldmljZS0wMDIiLCJyb2xlIjoiS1lDX09GRklDRVIiLCJzdGF0dXMiOiJBQ1RJVkUiLCJpYXQiOjE3NjkzMjA4MjQsImV4cCI6MTc2OTMyMTcyNCwidHlwZSI6IkFDQ0VTUyIsImlzcyI6Im9wdGltYU5ldC1hdXRoIn0.bkQg5p2sqk5QWWbhdGMvnIaePv4P1Bg-HuEL5-8y38g"
+// curl -X GET "http://localhost:8080/api/kyc-officer/kyc-applications/13/documents?page=0&size=5&sortField=id&sortDirection=asc" \
+//     -H "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1IiwiZGV2aWNlSWQiOiJ0ZXN0LWRldmljZS0wMDIiLCJyb2xlIjoiS1lDX09GRklDRVIiLCJzdGF0dXMiOiJBQ1RJVkUiLCJpYXQiOjE3NjkzMjA4MjQsImV4cCI6MTc2OTMyMTcyNCwidHlwZSI6IkFDQ0VTUyIsImlzcyI6Im9wdGltYU5ldC1hdXRoIn0.bkQg5p2sqk5QWWbhdGMvnIaePv4P1Bg-HuEL5-8y38g"
 
-  ========= USER =========
+//   ========= USER =========
 
-  curl -X POST http://localhost:8080/api/auth/registration/verify \
-    -H "Content-Type: application/json" \
-    -d '{
-      "userId": 47,
-      "otp": "411674"
-    }'
+//   curl -X POST http://localhost:8080/api/auth/registration/verify \
+//     -H "Content-Type: application/json" \
+//     -d '{
+//       "userId": 47,
+//       "otp": "411674"
+//     }'
 
-curl -X POST http://localhost:8080/api/user/create/kyc-application \
-  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0NyIsImRldmljZUlkIjoiWFhYIiwicm9sZSI6IlVTRVIiLCJzdGF0dXMiOiJBUFBST1ZBTF9QRU5ESU5HIiwidHlwZSI6IlBSRV9BVVRIIiwiaWF0IjoxNzY5MTg1NDAyLCJleHAiOjE3NjkxODYwMDJ9.O9cb9hy0jS8M84HNi-8EqdeCg6QYZ4UeJ03eXMBCxTA"
-
-
---------- Kyc- document - user ------------
-
-curl -X POST http://localhost:8080/api/user/upload/kyc-document \
-  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0NyIsImRldmljZUlkIjoiWFhYIiwicm9sZSI6IlVTRVIiLCJzdGF0dXMiOiJBUFBST1ZBTF9QRU5ESU5HIiwidHlwZSI6IlBSRV9BVVRIIiwiaWF0IjoxNzY5MTg1NDAyLCJleHAiOjE3NjkxODYwMDJ9.O9cb9hy0jS8M84HNi-8EqdeCg6QYZ4UeJ03eXMBCxTA" \
-  -F "applicationId=11" \
-  -F "documentType=AADHAAR_BACK" \
-  -F "file=@/d/Aadharback.jpeg"
+// curl -X POST http://localhost:8080/api/user/create/kyc-application \
+//   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0NyIsImRldmljZUlkIjoiWFhYIiwicm9sZSI6IlVTRVIiLCJzdGF0dXMiOiJBUFBST1ZBTF9QRU5ESU5HIiwidHlwZSI6IlBSRV9BVVRIIiwiaWF0IjoxNzY5MTg1NDAyLCJleHAiOjE3NjkxODYwMDJ9.O9cb9hy0jS8M84HNi-8EqdeCg6QYZ4UeJ03eXMBCxTA"
 
 
-  -------- KYC - OFFICER - DOCUMENTS -----------
-  curl -X PUT "http://localhost:8080/api/kyc-officer/kyc-documents/7/start-review" \
-    -H "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1IiwiZGV2aWNlSWQiOiJ0ZXN0LWRldmljZS0wMDIiLCJyb2xlIjoiS1lDX09GRklDRVIiLCJzdGF0dXMiOiJBQ1RJVkUiLCJpYXQiOjE3NjkzMjIxODIsImV4cCI6MTc2OTMyMzA4MiwidHlwZSI6IkFDQ0VTUyIsImlzcyI6Im9wdGltYU5ldC1hdXRoIn0.qHIVBytdrSI38vLvLtG-wqbMiYmrM4vuk8eoKcNMwz8"
+// --------- Kyc- document - user ------------
 
-curl -X PUT "http://localhost:8080/api/kyc-officer/kyc-documents/6/approve" \
-  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1IiwiZGV2aWNlSWQiOiJ0ZXN0LWRldmljZS0wMDIiLCJyb2xlIjoiS1lDX09GRklDRVIiLCJzdGF0dXMiOiJBQ1RJVkUiLCJpYXQiOjE3NjkzMjIxODIsImV4cCI6MTc2OTMyMzA4MiwidHlwZSI6IkFDQ0VTUyIsImlzcyI6Im9wdGltYU5ldC1hdXRoIn0.qHIVBytdrSI38vLvLtG-wqbMiYmrM4vuk8eoKcNMwz8"
+// curl -X POST http://localhost:8080/api/user/upload/kyc-document \
+//   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0NyIsImRldmljZUlkIjoiWFhYIiwicm9sZSI6IlVTRVIiLCJzdGF0dXMiOiJBUFBST1ZBTF9QRU5ESU5HIiwidHlwZSI6IlBSRV9BVVRIIiwiaWF0IjoxNzY5MTg1NDAyLCJleHAiOjE3NjkxODYwMDJ9.O9cb9hy0jS8M84HNi-8EqdeCg6QYZ4UeJ03eXMBCxTA" \
+//   -F "applicationId=11" \
+//   -F "documentType=AADHAAR_BACK" \
+//   -F "file=@/d/Aadharback.jpeg"
 
-curl -X PUT \
-  "http://localhost:8080/api/kyc-officer/kyc-documents/9/reject?reason=DOES%20NOT%20MATCH%20REGISTERED%20DETAILS" \
-  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1IiwiZGV2aWNlSWQiOiJ0ZXN0LWRldmljZS0wMDIiLCJyb2xlIjoiS1lDX09GRklDRVIiLCJzdGF0dXMiOiJBQ1RJVkUiLCJpYXQiOjE3NjkyNzk4MTksImV4cCI6MTc2OTI4MDcxOSwidHlwZSI6IkFDQ0VTUyIsImlzcyI6Im9wdGltYU5ldC1hdXRoIn0.slubhFKFoZHp32c3MGgCF5PSZkmuyuBuuC4XKC8slhA"
 
-curl -X GET "http://localhost:8080/api/kyc-officer/kyc-documents/10/download" \
-  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1IiwiZGV2aWNlSWQiOiJ0ZXN0LWRldmljZS0wMDIiLCJyb2xlIjoiS1lDX09GRklDRVIiLCJzdGF0dXMiOiJBQ1RJVkUiLCJpYXQiOjE3Njk0MDcyNzMsImV4cCI6MTc2OTQwODE3MywidHlwZSI6IkFDQ0VTUyIsImlzcyI6Im9wdGltYU5ldC1hdXRoIn0.T5q7Hnuc9cKtyB7yNCYVerYvJQNSq-BPfdZbx95rOzU"
+//   -------- KYC - OFFICER - DOCUMENTS -----------
+//   curl -X PUT "http://localhost:8080/api/kyc-officer/kyc-documents/7/start-review" \
+//     -H "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1IiwiZGV2aWNlSWQiOiJ0ZXN0LWRldmljZS0wMDIiLCJyb2xlIjoiS1lDX09GRklDRVIiLCJzdGF0dXMiOiJBQ1RJVkUiLCJpYXQiOjE3NjkzMjIxODIsImV4cCI6MTc2OTMyMzA4MiwidHlwZSI6IkFDQ0VTUyIsImlzcyI6Im9wdGltYU5ldC1hdXRoIn0.qHIVBytdrSI38vLvLtG-wqbMiYmrM4vuk8eoKcNMwz8"
 
-  curl -X GET "http://localhost:8080/api/kyc-officer/kyc-applications/17/applicant" \
-    -H "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1IiwiZGV2aWNlSWQiOiJ0ZXN0LWRldmljZS0wMDIiLCJyb2xlIjoiS1lDX09GRklDRVIiLCJzdGF0dXMiOiJBQ1RJVkUiLCJpYXQiOjE3Njk0MDcyNzMsImV4cCI6MTc2OTQwODE3MywidHlwZSI6IkFDQ0VTUyIsImlzcyI6Im9wdGltYU5ldC1hdXRoIn0.T5q7Hnuc9cKtyB7yNCYVerYvJQNSq-BPfdZbx95rOzU"
+// curl -X PUT "http://localhost:8080/api/kyc-officer/kyc-documents/6/approve" \
+//   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1IiwiZGV2aWNlSWQiOiJ0ZXN0LWRldmljZS0wMDIiLCJyb2xlIjoiS1lDX09GRklDRVIiLCJzdGF0dXMiOiJBQ1RJVkUiLCJpYXQiOjE3NjkzMjIxODIsImV4cCI6MTc2OTMyMzA4MiwidHlwZSI6IkFDQ0VTUyIsImlzcyI6Im9wdGltYU5ldC1hdXRoIn0.qHIVBytdrSI38vLvLtG-wqbMiYmrM4vuk8eoKcNMwz8"
+
+// curl -X PUT \
+//   "http://localhost:8080/api/kyc-officer/kyc-documents/9/reject?reason=DOES%20NOT%20MATCH%20REGISTERED%20DETAILS" \
+//   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1IiwiZGV2aWNlSWQiOiJ0ZXN0LWRldmljZS0wMDIiLCJyb2xlIjoiS1lDX09GRklDRVIiLCJzdGF0dXMiOiJBQ1RJVkUiLCJpYXQiOjE3NjkyNzk4MTksImV4cCI6MTc2OTI4MDcxOSwidHlwZSI6IkFDQ0VTUyIsImlzcyI6Im9wdGltYU5ldC1hdXRoIn0.slubhFKFoZHp32c3MGgCF5PSZkmuyuBuuC4XKC8slhA"
+
+// curl -X GET "http://localhost:8080/api/kyc-officer/kyc-documents/10/download" \
+//   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1IiwiZGV2aWNlSWQiOiJ0ZXN0LWRldmljZS0wMDIiLCJyb2xlIjoiS1lDX09GRklDRVIiLCJzdGF0dXMiOiJBQ1RJVkUiLCJpYXQiOjE3Njk0MDcyNzMsImV4cCI6MTc2OTQwODE3MywidHlwZSI6IkFDQ0VTUyIsImlzcyI6Im9wdGltYU5ldC1hdXRoIn0.T5q7Hnuc9cKtyB7yNCYVerYvJQNSq-BPfdZbx95rOzU"
+
+//   curl -X GET "http://localhost:8080/api/kyc-officer/kyc-applications/17/applicant" \
+//     -H "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1IiwiZGV2aWNlSWQiOiJ0ZXN0LWRldmljZS0wMDIiLCJyb2xlIjoiS1lDX09GRklDRVIiLCJzdGF0dXMiOiJBQ1RJVkUiLCJpYXQiOjE3Njk0MDcyNzMsImV4cCI6MTc2OTQwODE3MywidHlwZSI6IkFDQ0VTUyIsImlzcyI6Im9wdGltYU5ldC1hdXRoIn0.T5q7Hnuc9cKtyB7yNCYVerYvJQNSq-BPfdZbx95rOzU"
+// ========================= V2 CLEAN BACKEND =========================
+
+// curl -X POST "http://localhost:8080/api/v2/accounts/register" \
+//   -H "Content-Type: application/json" \
+//   -d '{
+//     "fullName": "Rahul Sharma",
+//     "email": "rahul.sharma@example.com",
+//     "mobileNumber": "9876543210",
+//     "dateOfBirth": "1998-04-16"
+//   }'
+
+// curl -X POST "http://localhost:8080/api/v2/kyc/1/submit" \
+//   -H "Content-Type: application/json" \
+//   -d '{
+//     "aadhaarNumber": "123456789012",
+//     "panNumber": "ABCDE1234F",
+//     "addressLine": "12 MG Road",
+//     "city": "Bengaluru",
+//     "state": "Karnataka",
+//     "postalCode": "560001",
+//     "country": "India"
+//   }'
+
+// curl -X PUT "http://localhost:8080/api/v2/kyc/1/approve"
+
+// curl -X POST "http://localhost:8080/api/v2/savings/1/open" \
+//   -H "Content-Type: application/json" \
+//   -d '{
+//     "initialDeposit": 5000.00,
+//     "interestRate": 3.50
+//   }'
+
+// curl -X POST "http://localhost:8080/api/v2/savings/SAV202600000001/deposit" \
+//   -H "Content-Type: application/json" \
+//   -d '{
+//     "amount": 1200.00,
+//     "remarks": "cash deposit"
+//   }'
+
+// curl -X POST "http://localhost:8080/api/v2/savings/SAV202600000001/withdraw" \
+//   -H "Content-Type: application/json" \
+//   -d '{
+//     "amount": 200.00,
+//     "remarks": "atm withdrawal"
+//   }'
+
+// curl -X GET "http://localhost:8080/api/v2/savings/SAV202600000001"
+// curl -X GET "http://localhost:8080/api/v2/savings/customer/1"
+// curl -X GET "http://localhost:8080/api/v2/users"
+// curl -X GET "http://localhost:8080/api/v2/users/1"
+// curl -X PUT "http://localhost:8080/api/v2/users/1/status/BLOCKED"
