@@ -18,7 +18,7 @@ public class CustomerV2 {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "customer_code", unique = true)
+    @Column(name = "customer_code", nullable = false, unique = true, length = 32)
     private String customerCode;
 
     @Column(name = "full_name", nullable = false, length = 120)
@@ -29,6 +29,15 @@ public class CustomerV2 {
 
     @Column(name = "mobile_number", nullable = false, unique = true, length = 15)
     private String mobileNumber;
+
+    @Column(name = "mpin_hash", length = 64)
+    private String mpinHash;
+
+    @Column(name = "mfa_enabled", nullable = false)
+    private Boolean mfaEnabled;
+
+    @Column(name = "mfa_secret", length = 64)
+    private String mfaSecret;
 
     @Column(name = "date_of_birth", nullable = false)
     private LocalDate dateOfBirth;
@@ -48,6 +57,9 @@ public class CustomerV2 {
         LocalDateTime now = LocalDateTime.now();
         this.createdAt = now;
         this.updatedAt = now;
+        if (this.mfaEnabled == null) {
+            this.mfaEnabled = Boolean.FALSE;
+        }
     }
 
     @PreUpdate

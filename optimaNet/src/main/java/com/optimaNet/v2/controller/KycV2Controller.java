@@ -1,7 +1,11 @@
 package com.optimaNet.v2.controller;
 
 import com.optimaNet.v2.dto.KycCaseResponse;
+import com.optimaNet.v2.dto.KycDocumentVerificationRequest;
+import com.optimaNet.v2.dto.KycDocumentVerificationResponse;
 import com.optimaNet.v2.dto.KycDecisionRequest;
+import com.optimaNet.v2.dto.PanVerificationRequest;
+import com.optimaNet.v2.dto.PanVerificationResponse;
 import com.optimaNet.v2.dto.SubmitKycRequest;
 import com.optimaNet.v2.service.CoreBankingV2Service;
 import jakarta.validation.Valid;
@@ -23,6 +27,18 @@ public class KycV2Controller {
             @Valid @RequestBody SubmitKycRequest request
     ) {
         return ResponseEntity.ok(service.submitKyc(customerId, request));
+    }
+
+    @PostMapping("/pan/verify")
+    public ResponseEntity<PanVerificationResponse> verifyPan(@Valid @RequestBody PanVerificationRequest request) {
+        return ResponseEntity.ok(service.verifyPan(request.panNumber()));
+    }
+
+    @PostMapping("/document/verify")
+    public ResponseEntity<KycDocumentVerificationResponse> verifyDocument(
+            @Valid @RequestBody KycDocumentVerificationRequest request
+    ) {
+        return ResponseEntity.ok(service.verifyKycDocument(request.documentType(), request.documentNumber()));
     }
 
     @PutMapping("/{customerId}/approve")

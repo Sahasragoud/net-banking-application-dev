@@ -13,6 +13,7 @@ public record CustomerResponse(
         String mobileNumber,
         LocalDate dateOfBirth,
         CustomerStatus customerStatus,
+        Boolean mfaEnabled,
         LocalDateTime createdAt
 ) {
 }

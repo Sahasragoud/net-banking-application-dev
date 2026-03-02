@@ -28,6 +28,9 @@ public class KycCaseV2 {
     @Column(name = "aadhaar_number", length = 32)
     private String aadhaarNumber;
 
+    @Column(name = "voter_id_number", length = 20)
+    private String voterIdNumber;
+
     @Column(name = "pan_number", length = 20)
     private String panNumber;
 

@@ -9,6 +9,7 @@ public record KycCaseResponse(
         Long customerId,
         KycStatus kycStatus,
         String aadhaarNumberMasked,
+        String voterIdNumberMasked,
         String panNumberMasked,
         String rejectionReason,
         LocalDateTime submittedAt,
