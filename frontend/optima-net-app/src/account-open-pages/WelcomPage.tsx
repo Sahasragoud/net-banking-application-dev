@@ -2,20 +2,41 @@ import React, { useState } from "react";
 import PanVerifyPopUp from "./PanVerifyPopUp";
 import AadharVerifyPopUp from "./AadharVerifyPopUp";
 import AccountStepLayout from "./AccountStepLayout";
+import { useNavigate } from "react-router-dom";
+import { useOnboarding } from "./OnboardingContext";
+import { api } from "../api/api-client";
 
 type IdType = "aadhaar" | "voter";
 
 const WelcomePage: React.FC = () => {
-  const [pan, setPan] = useState("");
-  const [idType, setIdType] = useState<IdType>("aadhaar");
-  const [idValue, setIdValue] = useState("");
+  const navigate = useNavigate();
+  const {
+    registrationDraft,
+    customerId,
+    kycDraft,
+    updateKycDraft,
+    registrationUserId,
+    setRegistrationUserId,
+    setRegistrationToken,
+  } = useOnboarding();
+
+  const [pan, setPan] = useState(kycDraft.panNumber);
+  const [idType, setIdType] = useState<IdType>(kycDraft.idType || "aadhaar");
+  const [idValue, setIdValue] = useState(
+    (kycDraft.idType || "aadhaar") === "aadhaar" ? kycDraft.aadhaarNumber : kycDraft.voterIdNumber
+  );
   const [consent, setConsent] = useState(false);
   const [terms, setTerms] = useState(false);
+  const [error, setError] = useState("");
 
   const [showVerify, setShowVerify] = useState(false);
   const [showAadhar, setShowAadhar] = useState(false);
+  const [startingOtp, setStartingOtp] = useState(false);
+  const [verifyingPan, setVerifyingPan] = useState(false);
+  const [panHolderName, setPanHolderName] = useState("");
+  const [idHolderName, setIdHolderName] = useState("");
 
-  const userName = "Rohan Sharma"; // mock fetched name
+  const userName = registrationDraft.fullName || "Customer";
 
   const isPanValid = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(pan);
   const isAadhaarValid = /^\d{12}$/.test(idValue);
@@ -26,12 +47,43 @@ const WelcomePage: React.FC = () => {
 
   const isFormValid = isPanValid && isIdValid && consent && terms;
 
-
-    const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!customerId) {
+      setError("Customer registration is required before KYC.");
+      navigate("/open-savings");
+      return;
+    }
     if (!isFormValid) return;
-    setShowVerify(true);
-    };
+    setError("");
+    const selectedDocumentType = idType === "aadhaar" ? "AADHAAR" : "VOTER_ID";
+    setVerifyingPan(true);
+    Promise.all([
+      api.verifyKycDocument({ documentType: "PAN", documentNumber: pan }),
+      api.verifyKycDocument({ documentType: selectedDocumentType, documentNumber: idValue }),
+    ])
+      .then(([panResult, idResult]) => {
+        const panName = panResult.holderName.trim();
+        const idName = idResult.holderName.trim();
+        if (panName.toUpperCase() !== idName.toUpperCase()) {
+          throw new Error("PAN and selected identity document belong to different holders.");
+        }
+        setPanHolderName(panName);
+        setIdHolderName(idName);
+        updateKycDraft({
+          panNumber: pan,
+          idType,
+          aadhaarNumber: idType === "aadhaar" ? idValue : "",
+          voterIdNumber: idType === "voter" ? idValue : "",
+        });
+        setShowVerify(true);
+      })
+      .catch((err) => {
+        const message = err instanceof Error ? err.message : "Unable to verify KYC details.";
+        setError(message);
+      })
+      .finally(() => setVerifyingPan(false));
+  };
 
   const handleInfoClick = (field: string) => {
     alert(`Information about ${field}`);
@@ -79,7 +131,7 @@ const WelcomePage: React.FC = () => {
               </button>
             </div>
 
-            {pan.length < 0 && !isPanValid && (
+            {pan.length > 0 && !isPanValid && (
               <p className="text-xs text-red-500 mt-1">
                 Invalid PAN format
               </p>
@@ -189,31 +241,51 @@ const WelcomePage: React.FC = () => {
           {/* Button */}
           <button
             type="submit"
-            disabled={!isFormValid}
+            disabled={!isFormValid || verifyingPan}
             className={`w-full rounded-lg py-2.5 font-medium transition
               ${
-                isFormValid
+                isFormValid && !verifyingPan
                   ? "bg-blue-600 hover:bg-blue-700 text-white"
                   : "bg-gray-300 text-gray-500 cursor-not-allowed"
               }`}
           >
-            Proceed to Verify
+            {verifyingPan ? "Verifying KYC..." : "Proceed to Verify"}
           </button>
+          {error && <p className="text-sm text-red-600">{error}</p>}
 
         </form>
 
       {showVerify && (
         <PanVerifyPopUp
             pan={pan}
-            userName={userName}
+            userName={panHolderName || idHolderName || userName}
             onClose={() => setShowVerify(false)}
-            onProceed={() => {
+            onProceed={async () => {
             if (idType === "aadhaar") {
-                setShowVerify(false);
-                setShowAadhar(true);
+                try {
+                  setStartingOtp(true);
+                  if (!registrationUserId) {
+                    const start = await api.startRegistration({
+                      fullName: registrationDraft.fullName,
+                      aadhaarNumber: idValue,
+                      mobileNumber: registrationDraft.mobileNumber,
+                      emailAddress: registrationDraft.email,
+                    });
+                    setRegistrationUserId(start.userId);
+                  }
+                  setShowVerify(false);
+                  setShowAadhar(true);
+                } catch (err) {
+                  const message = err instanceof Error ? err.message : "Unable to send OTP to email.";
+                  setError(message);
+                  setShowVerify(false);
+                } finally {
+                  setStartingOtp(false);
+                }
             } else {
                 alert("Voter Verification Complete");
                 setShowVerify(false);
+                navigate("/user-details");
             }
             }}
         />
@@ -223,8 +295,27 @@ const WelcomePage: React.FC = () => {
         <AadharVerifyPopUp
             maskedAadhar={`XXXXXXXX${idValue.slice(-4)}`}
             onClose={() => setShowAadhar(false)}
+            email={registrationDraft.email}
+            onResend={async () => {
+              if (!registrationUserId) {
+                throw new Error("Registration session missing. Please restart verification.");
+              }
+              await api.resendRegistrationOtp(registrationUserId);
+            }}
+            onVerified={async (otp) => {
+              if (!registrationUserId) {
+                throw new Error("Registration session missing. Please restart verification.");
+              }
+              const result = await api.verifyRegistrationOtp({
+                userId: registrationUserId,
+                otp,
+              });
+              setRegistrationToken(result.token);
+              navigate("/user-details");
+            }}
         />
         )}
+        {startingOtp && <p className="mt-3 text-center text-sm text-gray-600">Sending OTP to your email...</p>}
 
   </AccountStepLayout>
   );

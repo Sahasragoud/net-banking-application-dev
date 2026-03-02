@@ -3,14 +3,48 @@ import AccountStepLayout from "./AccountStepLayout";
 import ad from "../assets/credit-card-ad.jpg";
 import { AccountCreatedPopUp } from "./AccountCreatedPopUp";
 import { useNavigate } from "react-router-dom";
+import { useOnboarding } from "./OnboardingContext";
+import { api } from "../api/api-client";
 
 export const DebitCardCreatedPopUp: React.FC = () => {
   const [showPopup, setShowPopup] = useState(false);
+  const [creating, setCreating] = useState(false);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { customerId, accountNumber, setAccountNumber } = useOnboarding();
 
   const handleGoToDashboard = () => {
     setShowPopup(false);
-    navigate("/dashboard");
+    navigate("/account-details");
+  };
+
+  const handleFinishSetup = async () => {
+    if (creating) return;
+    if (!customerId) {
+      setError("Customer session not found. Restart onboarding.");
+      navigate("/open-savings");
+      return;
+    }
+    if (accountNumber) {
+      setShowPopup(true);
+      return;
+    }
+
+    setCreating(true);
+    setError("");
+    try {
+      const savings = await api.openSavings(customerId, {
+        initialDeposit: 0,
+        interestRate: 3.5,
+      });
+      setAccountNumber(savings.accountNumber);
+      setShowPopup(true);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Unable to open savings account.";
+      setError(message);
+    } finally {
+      setCreating(false);
+    }
   };
 
   return (
@@ -53,12 +87,14 @@ export const DebitCardCreatedPopUp: React.FC = () => {
         {/* Proceed Button */}
           <div className="mt-10">
             <button
-              onClick={() => setShowPopup(true)}
+              onClick={handleFinishSetup}
+              disabled={creating}
               className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition"
             >
-              Finish Setup
+              {creating ? "Creating Account..." : "Finish Setup"}
             </button>
           </div>
+          {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
       </div>
       {showPopup && <AccountCreatedPopUp onGoToDashboard={handleGoToDashboard} />}
     </AccountStepLayout>

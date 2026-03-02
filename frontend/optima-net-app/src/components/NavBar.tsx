@@ -35,6 +35,12 @@ const NavBar = () => {
         {/* Right: Actions */}
         <nav className="flex items-center gap-6">
 
+          <a
+            href="/login"
+            className="text-sm font-semibold text-blue-800 hover:text-blue-900 transition-colors"
+          >
+            Login
+          </a>
           <button
             type="button"
             aria-label="Language selector"

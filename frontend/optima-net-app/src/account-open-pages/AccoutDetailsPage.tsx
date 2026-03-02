@@ -1,10 +1,15 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import AccountStepLayout from "./AccountStepLayout";
 import { useNavigate } from "react-router-dom";
+import { useOnboarding } from "./OnboardingContext";
+import { api } from "../api/api-client";
 
 type AccountDetails = {
-  crn: string;
+  customerCode: string;
+  holderName: string;
   accountNumber: string;
+  bankName: string;
+  branchName: string;
   ifsc: string;
   upi: string;
 };
@@ -15,13 +20,6 @@ type CardDetails = {
   cvv: string;
 };
 
-const accountDetails: AccountDetails = {
-  crn: "12345678",
-  accountNumber: "987654321234",
-  ifsc: "ABCD0123456",
-  upi: "sahasra@bank",
-};
-
 const cardDetails: CardDetails = {
   cardNumber: "XXXX XXXX XXXX 1234",
   expiry: "12/28",
@@ -30,11 +28,62 @@ const cardDetails: CardDetails = {
 
 const AccoutDetailsPage: React.FC = () => {
   const navigate = useNavigate();
+  const { customerCode, accountNumber, registrationDraft } = useOnboarding();
+  const [liveAccountNumber, setLiveAccountNumber] = useState(accountNumber);
+  const [holderName, setHolderName] = useState(registrationDraft.fullName || "Pending");
+  const [bankName, setBankName] = useState("OptimaNet Bank");
+  const [branchName, setBranchName] = useState("Digital Banking Branch");
+  const [ifsc, setIfsc] = useState("OPTI0001234");
+  const [upi, setUpi] = useState(registrationDraft.mobileNumber ? `${registrationDraft.mobileNumber}@optima` : "pending@optima");
+  const [customerCodeLive, setCustomerCodeLive] = useState(customerCode || "Pending");
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    let cancelled = false;
+
+    if (!accountNumber) return;
+    api
+      .getSavingsAccount(accountNumber)
+      .then((response) => {
+        if (!cancelled) {
+          setLiveAccountNumber(response.accountNumber);
+          setHolderName(response.holderName);
+          setBankName(response.bankName);
+          setBranchName(response.branchName);
+          setIfsc(response.ifscCode);
+          setUpi(response.upiHandle);
+          setCustomerCodeLive(response.customerCode || customerCode || "Pending");
+        }
+      })
+      .catch((err) => {
+        if (!cancelled) {
+          const message = err instanceof Error ? err.message : "Unable to fetch account details.";
+          setError(message);
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [accountNumber]);
+
+  const accountDetails: AccountDetails = {
+    customerCode: customerCodeLive || "Pending",
+    holderName: holderName || "Pending",
+    accountNumber: liveAccountNumber || "Pending",
+    bankName,
+    branchName,
+    ifsc,
+    upi,
+  };
 
   const handleCopy = async () => {
     const text = `
-CRN: ${accountDetails.crn}
+Customer Code: ${accountDetails.customerCode}
+Account Holder: ${accountDetails.holderName}
 Account Number: ${accountDetails.accountNumber}
+Bank: ${accountDetails.bankName}
+Branch: ${accountDetails.branchName}
 IFSC Code: ${accountDetails.ifsc}
 UPI Handle: ${accountDetails.upi}
     `;
@@ -69,8 +118,11 @@ UPI Handle: ${accountDetails.upi}
             Account Details
           </h2>
 
-          <DetailRow label="CRN (Login ID)" value={accountDetails.crn} />
+          <DetailRow label="Customer Code" value={accountDetails.customerCode} />
+          <DetailRow label="Account Holder" value={accountDetails.holderName} />
           <DetailRow label="Account Number" value={accountDetails.accountNumber} />
+          <DetailRow label="Bank" value={accountDetails.bankName} />
+          <DetailRow label="Branch" value={accountDetails.branchName} />
           <DetailRow label="IFSC Code" value={accountDetails.ifsc} />
           <DetailRow label="UPI Handle" value={accountDetails.upi} />
 
@@ -91,6 +143,7 @@ UPI Handle: ${accountDetails.upi}
           >
             Continue to Transactions
           </button>
+          {error && <p className="text-sm text-red-600">{error}</p>}
         </div>
 
         {/* Virtual Debit Card Section */}

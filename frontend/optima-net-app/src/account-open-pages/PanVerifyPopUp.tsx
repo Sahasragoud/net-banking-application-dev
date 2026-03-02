@@ -33,15 +33,13 @@ const PanVerifyPopUp: React.FC<Props> = ({
           <p className="text-base font-semibold text-gray-800">
             {pan}
           </p>
-          <p className="text-sm text-gray-600 mt-2">
-            belongs to
-          </p>
+          <p className="text-sm text-gray-600 mt-2">Cardholder Name</p>
           <p className="text-lg font-semibold text-gray-900">
             {userName}
           </p>
 
           <p className="text-xs text-blue-600 mt-3 font-medium">
-            Fetched from NSDL
+            Verify this name matches your PAN card details
           </p>
         </div>
 

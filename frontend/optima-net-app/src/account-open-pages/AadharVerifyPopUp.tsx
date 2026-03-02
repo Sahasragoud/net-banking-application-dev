@@ -1,21 +1,27 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 interface Props {
-  maskedAadhar: string; // e.g., XXXXXXXX1234
+  maskedAadhar: string;
+  email: string;
   onClose: () => void;
+  onVerified: (otp: string) => Promise<void>;
+  onResend: () => Promise<void>;
 }
 
 const AadharVerifyPopUp: React.FC<Props> = ({
   maskedAadhar,
+  email,
   onClose,
+  onVerified,
+  onResend,
 }) => {
   const [otp, setOtp] = useState("");
   const [timer, setTimer] = useState(120); // 2 minutes
   const [canResend, setCanResend] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const isOtpValid = /^\d{6}$/.test(otp);
-  const navigate = useNavigate();
 
   // Countdown Logic
   useEffect(() => {
@@ -38,21 +44,35 @@ const AadharVerifyPopUp: React.FC<Props> = ({
   };
 
   const handleResend = () => {
-    if (!canResend) return;
-    setTimer(120);
-    setCanResend(false);
-    setOtp("");
-    console.log("OTP Resent");
+    if (!canResend || loading) return;
+    setLoading(true);
+    setError("");
+    onResend()
+      .then(() => {
+        setTimer(120);
+        setCanResend(false);
+        setOtp("");
+      })
+      .catch((err) => {
+        const message = err instanceof Error ? err.message : "Failed to resend OTP.";
+        setError(message);
+      })
+      .finally(() => setLoading(false));
   };
 
-const handleVerify = () => {
-  if (!isOtpValid) return;
-
-  console.log("OTP Verified:", otp);
-
-  // Navigate to User Details Page
-  navigate("/user-details");
-};
+  const handleVerify = async () => {
+    if (!isOtpValid || loading) return;
+    setLoading(true);
+    setError("");
+    try {
+      await onVerified(otp);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "OTP verification failed.";
+      setError(message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 px-4">
@@ -60,11 +80,11 @@ const handleVerify = () => {
 
         {/* Heading */}
         <h2 className="text-xl font-semibold text-gray-800 text-center mb-2">
-          Verify your Aadhaar with OTP
+          Verify your Aadhaar by Email OTP
         </h2>
 
         <p className="text-sm text-gray-600 text-center mb-6">
-          OTP sent to {maskedAadhar}
+          OTP sent to {email} for Aadhaar {maskedAadhar}
         </p>
 
         {/* OTP Input */}
@@ -97,14 +117,14 @@ const handleVerify = () => {
           <button
             type="button"
             onClick={handleResend}
-            disabled={!canResend}
+            disabled={!canResend || loading}
             className={`font-medium ${
-              canResend
+              canResend && !loading
                 ? "text-blue-600 hover:underline"
                 : "text-gray-400 cursor-not-allowed"
             }`}
           >
-            Resend OTP
+            {loading ? "Please wait..." : "Resend OTP"}
           </button>
 
           <span className="text-gray-500">
@@ -115,15 +135,16 @@ const handleVerify = () => {
         {/* Verify Button */}
         <button
           onClick={handleVerify}
-          disabled={!isOtpValid}
+          disabled={!isOtpValid || loading}
           className={`w-full mt-6 py-2.5 rounded-lg font-medium transition ${
-            isOtpValid
+            isOtpValid && !loading
               ? "bg-blue-600 hover:bg-blue-700 text-white"
               : "bg-gray-300 text-gray-500 cursor-not-allowed"
           }`}
         >
-          Verify
+          {loading ? "Verifying..." : "Verify"}
         </button>
+        {error && <p className="mt-2 text-center text-sm text-red-600">{error}</p>}
 
         {/* Trouble Section */}
         <div className="mt-5 text-center">

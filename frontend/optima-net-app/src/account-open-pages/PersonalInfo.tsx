@@ -1,37 +1,54 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AccountStepLayout from "./AccountStepLayout";
+import { api } from "../api/api-client";
+import { useOnboarding } from "./OnboardingContext";
 
 interface FormData {
+  fullName: string;
   mobile: string;
   email: string;
+  dateOfBirth: string;
   pincode: string;
 }
 
 const PersonalInfo: React.FC = () => {
+  const navigate = useNavigate();
+  const { registrationDraft, updateRegistrationDraft, setCustomerData } = useOnboarding();
+
   const [formData, setFormData] = useState<FormData>({
-    mobile: "",
-    email: "",
-    pincode: "",
+    fullName: registrationDraft.fullName,
+    mobile: registrationDraft.mobileNumber,
+    email: registrationDraft.email,
+    dateOfBirth: registrationDraft.dateOfBirth,
+    pincode: registrationDraft.pincode,
   });
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
   const [touched, setTouched] = useState<Record<keyof FormData, boolean>>({
+    fullName: false,
     mobile: false,
     email: false,
+    dateOfBirth: false,
     pincode: false,
   });
 
+  const validateName = (fullName: string) => fullName.trim().length >= 3;
   const validateMobile = (mobile: string) => /^[6-9]\d{9}$/.test(mobile);
   const validateEmail = (email: string) =>
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const validateDob = (dateOfBirth: string) => {
+    if (!dateOfBirth) return false;
+    return new Date(dateOfBirth) < new Date();
+  };
   const validatePincode = (pincode: string) => /^\d{6}$/.test(pincode);
 
-  const navigate = useNavigate();
-
-
   const isFormValid =
+    validateName(formData.fullName) &&
     validateMobile(formData.mobile) &&
     validateEmail(formData.email) &&
+    validateDob(formData.dateOfBirth) &&
     validatePincode(formData.pincode);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -54,14 +71,43 @@ const PersonalInfo: React.FC = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!isFormValid) return;
-    navigate("/welcome");
-    console.log("Submitted Data:", formData);
+    if (!isFormValid || submitting) return;
+
+    setSubmitting(true);
+    setError("");
+
+    try {
+      const customer = await api.registerCustomer({
+        fullName: formData.fullName.trim(),
+        email: formData.email.trim(),
+        mobileNumber: formData.mobile,
+        dateOfBirth: formData.dateOfBirth,
+      });
+
+      updateRegistrationDraft({
+        fullName: formData.fullName.trim(),
+        email: formData.email.trim(),
+        mobileNumber: formData.mobile,
+        dateOfBirth: formData.dateOfBirth,
+        pincode: formData.pincode,
+      });
+      setCustomerData({ customerId: customer.id, customerCode: customer.customerCode });
+      navigate("/welcome");
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Unable to register customer.";
+      setError(message);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const errors = {
+    fullName:
+      touched.fullName && !validateName(formData.fullName)
+        ? "Enter full name (min 3 characters)"
+        : "",
     mobile:
       touched.mobile && !validateMobile(formData.mobile)
         ? "Enter valid Indian mobile number"
@@ -69,6 +115,10 @@ const PersonalInfo: React.FC = () => {
     email:
       touched.email && !validateEmail(formData.email)
         ? "Enter valid email address"
+        : "",
+    dateOfBirth:
+      touched.dateOfBirth && !validateDob(formData.dateOfBirth)
+        ? "Enter a valid date of birth"
         : "",
     pincode:
       touched.pincode && !validatePincode(formData.pincode)
@@ -86,6 +136,33 @@ const PersonalInfo: React.FC = () => {
       </p>
 
       <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+        <div>
+          <label
+            htmlFor="fullName"
+            className="mb-1 block text-sm font-medium text-gray-600"
+          >
+            Full Name
+          </label>
+          <input
+            id="fullName"
+            type="text"
+            name="fullName"
+            value={formData.fullName}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            placeholder="Enter full name"
+            autoComplete="name"
+            className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            aria-invalid={Boolean(errors.fullName)}
+            aria-describedby={errors.fullName ? "fullName-error" : undefined}
+          />
+          {errors.fullName && (
+            <p id="fullName-error" className="mt-1 text-xs text-red-500">
+              {errors.fullName}
+            </p>
+          )}
+        </div>
+
         {/* Mobile */}
         <div>
           <label
@@ -157,6 +234,32 @@ const PersonalInfo: React.FC = () => {
         {/* Pincode */}
         <div>
           <label
+            htmlFor="dateOfBirth"
+            className="mb-1 block text-sm font-medium text-gray-600"
+          >
+            Date of Birth
+          </label>
+          <input
+            id="dateOfBirth"
+            type="date"
+            name="dateOfBirth"
+            value={formData.dateOfBirth}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            aria-invalid={Boolean(errors.dateOfBirth)}
+            aria-describedby={errors.dateOfBirth ? "dateOfBirth-error" : undefined}
+          />
+          {errors.dateOfBirth && (
+            <p id="dateOfBirth-error" className="mt-1 text-xs text-red-500">
+              {errors.dateOfBirth}
+            </p>
+          )}
+        </div>
+
+        {/* Pincode */}
+        <div>
+          <label
             htmlFor="pincode"
             className="mb-1 block text-sm font-medium text-gray-600"
           >
@@ -197,17 +300,18 @@ const PersonalInfo: React.FC = () => {
         </p>
 
         {/* Button */}
+        {error && <p className="text-sm text-red-600">{error}</p>}
         <button
           type="submit"
-          disabled={!isFormValid}
+          disabled={!isFormValid || submitting}
           className={`mt-4 w-full rounded-lg py-2.5 font-medium transition 
               ${
-                isFormValid
+                isFormValid && !submitting
                   ? "bg-blue-600 hover:bg-blue-700 text-white"
                   : "bg-gray-300 text-gray-500 cursor-not-allowed"
               }`}
         >
-          Open Now
+          {submitting ? "Registering..." : "Open Now"}
         </button>
       </form>
     </AccountStepLayout>

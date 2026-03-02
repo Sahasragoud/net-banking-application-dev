@@ -14,6 +14,8 @@ import { OnboardingProvider } from './account-open-pages/OnboardingContext'
 import AccoutDetailsPage from './account-open-pages/AccoutDetailsPage'
 import SavingsDashboard from './account-open-pages/SavingsDashboard'
 import PostAccountDashboard from './account-open-pages/PostAccountDashboard'
+import LoginPage from './account-open-pages/LoginPage'
+import MfaSetupPage from './account-open-pages/MfaSetupPage'
 
 function App() {
   return (
@@ -23,6 +25,8 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<SavingsDashboard />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/mfa-setup" element={<MfaSetupPage />} />
             <Route path="/open-savings" element={<PersonalInfo />} />
             <Route path="/welcome" element={<WelcomePage />} />
             <Route path="/user-details" element={<UserDetailsPage />} />

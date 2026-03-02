@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AccountStepLayout from "./AccountStepLayout";
+import { api } from "../api/api-client";
+import { useOnboarding } from "./OnboardingContext";
 
 const UserDetailsPage: React.FC = () => {
   const [occupation, setOccupation] = useState("");
@@ -22,10 +24,34 @@ const UserDetailsPage: React.FC = () => {
     motherName === confirmMotherName;
 
   const navigate = useNavigate();
+  const { customerId } = useOnboarding();
+  const [error, setError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!isFormValid) return;
+    if (!isFormValid || submitting) return;
+    if (!customerId) {
+      setError("Customer session missing. Restart onboarding.");
+      navigate("/open-savings");
+      return;
+    }
+    setSubmitting(true);
+    setError("");
+    try {
+      await api.saveProfile(customerId, {
+        occupation,
+        incomeSource,
+        yearlyIncome,
+        maritalStatus,
+        fatherName: fatherName.trim(),
+        motherMaidenName: motherName.trim(),
+      });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unable to save user profile.");
+      setSubmitting(false);
+      return;
+    }
 
     navigate("/address-details");
   };
@@ -139,15 +165,16 @@ const UserDetailsPage: React.FC = () => {
 
           <button
             type="submit"
-            disabled={!isFormValid}
+            disabled={!isFormValid || submitting}
             className={`w-full py-2.5 rounded-lg font-medium transition ${
-              isFormValid
+              isFormValid && !submitting
                 ? "bg-blue-600 text-white"
                 : "bg-gray-300 text-gray-500 cursor-not-allowed"
             }`}
           >
-            Continue
+            {submitting ? "Saving..." : "Continue"}
           </button>
+          {error && <p className="text-sm text-red-600">{error}</p>}
 
         </form>
       </AccountStepLayout>

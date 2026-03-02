@@ -2,13 +2,16 @@ import { useState } from "react";
 import AccountStepLayout from "./AccountStepLayout";
 import { useNavigate } from "react-router-dom";
 import { useOnboarding } from "./OnboardingContext";
+import { api } from "../api/api-client";
 
 export default function SetMPINPage() {
   const [mpin, setMpin] = useState("");
   const [confirmMpin, setConfirmMpin] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
   const navigate = useNavigate();
-  const { setMpinSet } = useOnboarding();
+  const { customerId, setMpinSet } = useOnboarding();
 
 
   const isValid =
@@ -21,11 +24,24 @@ export default function SetMPINPage() {
     setConfirmMpin("");
   };
 
-  const handleConfirm = () => {
-    if (!isValid) return;
-    console.log("MPIN Set Successfully");
-     setMpinSet(true);
-    navigate("/virtual-card");
+  const handleConfirm = async () => {
+    if (!isValid || submitting) return;
+    if (!customerId) {
+      setError("Customer session missing. Restart onboarding.");
+      return;
+    }
+    setSubmitting(true);
+    setError("");
+    try {
+      await api.setMpin(customerId, { mpin });
+      setMpinSet(true);
+      navigate("/virtual-card");
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Unable to set MPIN.";
+      setError(message);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const handleChange =
@@ -76,16 +92,17 @@ export default function SetMPINPage() {
 
           <button
             onClick={handleConfirm}
-            disabled={!isValid}
+            disabled={!isValid || submitting}
             className={`px-4 py-2 rounded text-white ${
-              isValid
+              isValid && !submitting
                 ? "bg-blue-600"
                 : "bg-gray-400 cursor-not-allowed"
             }`}
           >
-            Confirm MPIN
+            {submitting ? "Saving..." : "Confirm MPIN"}
           </button>
         </div>
+        {error && <p className="mb-4 text-sm text-red-600">{error}</p>}
 
         {/* Caption */}
         <p className="text-xs text-center text-gray-500">

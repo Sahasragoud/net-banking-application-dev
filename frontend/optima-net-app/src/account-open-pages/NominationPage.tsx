@@ -1,5 +1,8 @@
 import { useState } from "react";
 import AccountStepLayout from "./AccountStepLayout";
+import { api } from "../api/api-client";
+import { useOnboarding } from "./OnboardingContext";
+import { useNavigate } from "react-router-dom";
 
 /* =======================
    Type Definitions
@@ -30,9 +33,12 @@ interface FormData {
 ======================= */
 
 export default function NominationPage() {
+  const { customerId } = useOnboarding();
+  const navigate = useNavigate();
   const [showForm, setShowForm] = useState<boolean>(false);
   const [confirmed, setConfirmed] = useState<boolean>(false);
   const [nominees, setNominees] = useState<Nominee[]>([]);
+  const [submitting, setSubmitting] = useState(false);
 
   const [formData, setFormData] = useState<FormData>({
     depositorName: "",
@@ -108,16 +114,44 @@ export default function NominationPage() {
     setShowForm(false);
   };
 
-  const handleSubmitFinal = () => {
+  const handleSubmitFinal = async () => {
     if (!confirmed) {
       alert("Please confirm before submitting.");
       return;
     }
+    if (!customerId) {
+      alert("Customer session missing. Restart onboarding.");
+      navigate("/open-savings");
+      return;
+    }
+    if (nominees.length === 0) {
+      alert("Add at least one nominee before submitting.");
+      return;
+    }
+    if (submitting) return;
+    setSubmitting(true);
 
-    console.log("Depositor:", formData.depositorName);
-    console.log("Nominees:", nominees);
-
-    alert("Nomination Submitted Successfully!");
+    try {
+      await api.saveNominees(
+        customerId,
+        nominees.map((n) => ({
+          depositorName: formData.depositorName || undefined,
+          depositorAddress: formData.depositorAddress || undefined,
+          nomineeName: n.name,
+          nomineeAddress: n.address || undefined,
+          relationship: n.relationship || undefined,
+          ageYears: n.age,
+          guardianName: n.guardianName,
+          guardianRelationship: n.guardianRelationship,
+        }))
+      );
+      alert("Nomination Submitted Successfully!");
+      navigate("/formalities");
+    } catch (err) {
+      alert(err instanceof Error ? err.message : "Unable to save nominees.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   /* =======================
@@ -211,9 +245,10 @@ export default function NominationPage() {
 
             <button
               onClick={handleSubmitFinal}
+              disabled={submitting}
               className="mt-4 bg-green-600 text-white px-6 py-3 rounded-xl"
             >
-              Submit
+              {submitting ? "Submitting..." : "Submit"}
             </button>
           </div>
         )}
