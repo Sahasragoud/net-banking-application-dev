@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "v2_customer_profiles")
 public class CustomerProfileV2 {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,22 +20,22 @@ public class CustomerProfileV2 {
     @JoinColumn(name = "customer_id", nullable = false, unique = true)
     private CustomerV2 customer;
 
-    @Column(length = 80)
+    @Column(name = "occupation", nullable = false, length = 100)
     private String occupation;
 
-    @Column(name = "income_source", length = 80)
+    @Column(name = "income_source", nullable = false, length = 100)
     private String incomeSource;
 
-    @Column(name = "yearly_income", length = 80)
+    @Column(name = "yearly_income", nullable = false, length = 100)
     private String yearlyIncome;
 
-    @Column(name = "marital_status", length = 40)
+    @Column(name = "marital_status", nullable = false, length = 50)
     private String maritalStatus;
 
-    @Column(name = "father_name", length = 120)
+    @Column(name = "father_name", nullable = false, length = 120)
     private String fatherName;
 
-    @Column(name = "mother_maiden_name", length = 120)
+    @Column(name = "mother_maiden_name", nullable = false, length = 120)
     private String motherMaidenName;
 
     @Column(name = "created_at", nullable = false)

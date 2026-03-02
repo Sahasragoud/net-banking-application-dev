@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "v2_nominees")
 public class NomineeV2 {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -31,7 +32,7 @@ public class NomineeV2 {
     @Column(name = "nominee_address", length = 255)
     private String nomineeAddress;
 
-    @Column(name = "relationship", length = 80)
+    @Column(name = "relationship", length = 60)
     private String relationship;
 
     @Column(name = "age_years", nullable = false)
@@ -40,14 +41,24 @@ public class NomineeV2 {
     @Column(name = "guardian_name", length = 120)
     private String guardianName;
 
-    @Column(name = "guardian_relationship", length = 80)
+    @Column(name = "guardian_relationship", length = 60)
     private String guardianRelationship;
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
+    @Column(name = "updated_at", nullable = false)
+    private LocalDateTime updatedAt;
+
     @PrePersist
     void onCreate() {
-        this.createdAt = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now();
+        this.createdAt = now;
+        this.updatedAt = now;
+    }
+
+    @PreUpdate
+    void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
     }
 }
